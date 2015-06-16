@@ -1,0 +1,16 @@
+language: cpp
+compiler:
+  - clang
+  - gcc
+
+# Setup different environments to test
+env:
+  - CPP14=0
+  - CPP14=1
+
+before_script:  
+    - mkdir build
+    - cd build
+    - cmake ..
+
+script: make
