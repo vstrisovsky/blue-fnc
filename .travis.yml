@@ -9,8 +9,16 @@ env:
   - CPP14=1
 
 before_script:  
-    - mkdir build
-    - cd build
-    - cmake ..
+  - sudo apt-get update -qq
+  - sudo apt-get install libboost-all-dev
+  - mkdir build
+  - cd build
+  - cmake ..
 
 script: make
+
+notifications:
+  email:
+    recipients: vstrisovsky@gmail.com
+    on_success: change
+    on_failure: always
