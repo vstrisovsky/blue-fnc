@@ -10,6 +10,6 @@ enable_testing()
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 
-set(CMAKE_CXX_FLAGS "-std=c++11")
+set_property(TARGET Functions PROPERTY CXX_STANDARD 11)
 
 add_executable(Functions Functions.cpp)
