@@ -8,15 +8,25 @@ env:
   - CPP14=0
   - CPP14=1
 
-before_script:  
+before_install:
+  - wget -q0 http://www.cmake.org/files/v3.2/cmake-3.2.3.tar.gz | tar xvz
+
+install:
+  - cd cmake-3.2.3
+  - ./bootstrap
+  - make -j 2
+  - sudo make install
+  - cd ..
   - sudo apt-get update -qq
   - sudo apt-get install libboost-all-dev
-  - wget -qO- http://www.cmake.org/files/v3.1/cmake-3.1.0-Linux-x86_64.tar.gz | tar xvz
+
+before_script:  
   - mkdir build
   - cd build
   - ./cmake-3.1.0-Linux-x86_64/bin/cmake ..
 
-script: make
+script: 
+  - make
 
 notifications:
   email:
