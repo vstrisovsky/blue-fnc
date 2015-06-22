@@ -70,8 +70,43 @@ int main(void)
      ,   ForEach([](int i){std::cout << i << "\n";})
      );
     std::cout << "------\n";
+    int sum = _(   Range(0, 5)
+               ,   Reduce(0, [](int a, int b){ return a + b;})
+               );
+    std::cout << "Sum is: " << sum << "\n";
+    std::cout << "------\n";
 
     std::cout << tm.elapsed() << "\n";
+    tm.restart();
+
+    auto r = _(   Range(0, 10000)
+             ,   Map([](int i) {return i * i;})
+             ,   Reduce(std::vector<int>(), [](std::vector<int>& v, int a)
+                                            {   v.emplace_back(a);
+                                                return v;
+                                            })
+             );
+
+    std::cout << "1: " << tm.elapsed() << "\n";
+
+    tm.restart();
+
+    auto r2 = _(  Range(0, 10000)
+             ,   Map([](int i) {return i * i;})
+             ,   ToVector<std::vector<int>>()
+             );
+
+    std::cout << "2: " << tm.elapsed() << "\n";
+
+    std::cout << "\n------\n";
+
+    tm.restart();
+    std::vector<int> tv;
+    for(int i = 0; i < 10000; ++i)
+    {
+        tv.emplace_back(i*i);
+    };
+    std::cout << "3: " << tm.elapsed() << "\n";
 
     return EXIT_SUCCESS;
 }

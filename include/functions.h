@@ -23,7 +23,8 @@ enum class StepType
     eTransformator,
     eFilter,
     eLimiter,
-    eTerminator
+    eTerminator,
+    eReducer
 };
 
 template<typename _T>
@@ -338,7 +339,6 @@ _Take Take(int count)
     return _Take(count);
 }
 
-/////////////
 struct _Drop
 {
     static const StepType stepType = StepType::eLimiter;
@@ -371,21 +371,145 @@ _Drop Drop(int count)
 {
     return _Drop(count);
 }
-/////////////
+
+template<typename _ResultType, typename _Fnc>
+struct _Reduce
+{
+    static const StepType stepType = StepType::eReducer;
+
+    typedef _ResultType ResultType;
+    ResultType _result;
+    _Fnc _fnc;
+
+    _Reduce(_ResultType initialValue, _Fnc fnc)
+    : _result(initialValue)
+    , _fnc(fnc)
+    {
+    }
+
+    template<typename _T, typename _F, typename _I>
+    bool push(_T&& v, _F& functions, _I)
+    {
+        typedef typename _I::Next Next;
+        _result = _fnc(_result, v);
+        return true;
+    }
+
+    template<typename _F, typename _I>
+    void finish(_F& functions, _I)
+    {
+    }
+
+    ResultType get()
+    {
+        return std::move(_result);
+    }
+};
+
+template<typename _ResultType, typename _Fnc>
+_Reduce<_ResultType, _Fnc> Reduce(_ResultType initialValue, _Fnc fnc)
+{
+    return _Reduce<_ResultType, _Fnc>(initialValue, fnc);
+}
+
+//
+template<typename _ResultType>
+struct _ToVector
+{
+    static const StepType stepType = StepType::eReducer;
+
+    typedef _ResultType ResultType;
+    ResultType _result;
+
+    _ToVector()
+    {
+    }
+
+    template<typename _T, typename _F, typename _I>
+    bool push(_T&& v, _F& functions, _I)
+    {
+        typedef typename _I::Next Next;
+        _result.emplace_back(std::move(v));
+        return true;
+    }
+
+    template<typename _F, typename _I>
+    void finish(_F& functions, _I)
+    {
+    }
+
+    ResultType get()
+    {
+        return std::move(_result);
+    }
+};
+
+template<typename _ResultType>
+_ToVector<_ResultType> ToVector()
+{
+    return _ToVector<_ResultType>();
+}
+//
+
+template<typename _T, StepType = _T::stepType>
+struct _ResultType
+{
+    typedef void ResultType;
+};
+
+template<typename _T>
+struct _ResultType<_T, StepType::eReducer>
+{
+    typedef typename _T::ResultType ResultType;
+};
+
+template<typename... _T>
+struct _ChainTypes
+{
+    typedef std::tuple<_T...> TupleType;
+    static const int size = std::tuple_size<TupleType>::value;
+    typedef typename std::tuple_element< size - 1, TupleType>::type TailType;
+    typedef typename _ResultType<TailType>::ResultType ResultType;
+};
+
+template<typename _T>
+struct Return
+{
+    template<typename _Node>
+    static _T get(_Node& node)
+    {
+        return std::move(node.get());
+    }
+};
+
+template<>
+struct Return<void>
+{
+    template<typename _Node>
+    static void get(_Node&)
+    {
+    }
+};
+
 struct Functions
 {
     template<typename ... _T>
-    void operator()(_T&&... t)
+    typename _ChainTypes<_T...>::ResultType operator()(_T&&... t)
     {
-        typedef std::tuple<_T...> type;
-        type functions(std::forward<_T>(t)...);
+        typedef _ChainTypes<_T...> ChainTypes;
 
+        typedef typename ChainTypes::TupleType type;
+
+        type functions(std::forward<_T>(t)...);
+        // todo the next lines move to container node
         bool cont = true;
         while(cont && std::get<0>(functions).hasNext())
         {
             cont = std::get<1>(functions).push(std::get<0>(functions).value(), functions, Int<1>());
         };
         std::get<1>(functions).finish(functions, Int<1>());
+
+        return Return<typename ChainTypes::ResultType>::get(std::get<ChainTypes::size - 1>(functions));
     }
 };
 
