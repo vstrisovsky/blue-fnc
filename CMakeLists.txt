@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.1)
 
 project("Functions")
 
@@ -6,11 +6,46 @@ find_package(Boost REQUIRED)
 
 include_directories(${Boost_INCLUDE_DIRS})
 
-enable_testing()
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_BINARY_DIR}/include/catch)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
+include(ExternalProject)
 
 add_executable(Functions Functions.cpp)
 
 set_property(TARGET Functions PROPERTY CXX_STANDARD 11)
 
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall")
+
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall")
+
+ExternalProject_Add(CATCH
+  PREFIX ${CMAKE_CURRENT_BINARY_DIR}/external
+  GIT_REPOSITORY https://github.com/dreal-deps/Catch.git
+  CONFIGURE_COMMAND echo "nothing to configure"
+  BUILD_COMMAND echo "nothing to build"
+  BUILD_IN_SOURCE 1
+  INSTALL_COMMAND mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/include/catch && cp -v single_include/catch.hpp ${CMAKE_CURRENT_BINARY_DIR}/include/catch/)
+
+add_custom_target(update_catch
+  COMMAND git fetch --all && git reset --hard origin/master && mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/include/catch && cp -v single_include/catch.hpp ${CMAKE_CURRENT_BINARY_DIR}/include/catch/
+  WORKING_DIRECTORY ${DREAL_BINARY_DIR}/external/src/CATCH)
+
+enable_testing()
+
+set(testName unit-tests)
+
+file(GLOB TEST_SRCS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} tests/*.cpp)
+
+foreach(testSrc ${TEST_SRCS})
+        get_filename_component(unitTest ${testSrc} NAME_WE)
+
+        add_executable(${testName} ${testSrc})
+
+        set_target_properties(${testName} PROPERTIES
+            RUNTIME_OUTPUT_DIRECTORY  tests)
+
+        add_test(NAME ${testName}
+                 COMMAND ${CMAKE_CURRENT_BINARY_DIR}/tests/${testName}
+                )
+        set_property(TARGET ${testName} PROPERTY CXX_STANDARD 11)
+endforeach(testSrc)
