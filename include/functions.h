@@ -33,9 +33,15 @@ struct _Range
     static const StepType stepType = StepType::eGenerator;
     typedef Empty InType;
     typedef _T OutType;
-    _T _start, _end;
+    _T _start, _end, _step;
+
     _Range(_T start, _T end)
-    : _start(start), _end(end)
+    : _start(start), _end(end), _step(_T(1))
+    {
+    }
+
+    _Range(_T start, _T end, _T step)
+    : _start(start), _end(end), _step(step)
     {
     }
 
@@ -46,14 +52,35 @@ struct _Range
 
     _T value()
     {
-        return _start++;
+        _T result = _start;
+        _start += _step;
+        return result;
     }
 };
 
+
 template<typename _T>
-_Range<_T> Range(_T start, _T end = std::numeric_limits<_T>::max())
+_Range<_T> Range(_T start, _T end, _T step)
+{
+    return _Range<_T>(start, end, step);
+}
+
+template<typename _T>
+_Range<_T> Range(_T start, _T end)
 {
     return _Range<_T>(start, end);
+}
+
+template<typename _T>
+_Range<_T> Range(_T count)
+{
+    return _Range<_T>(_T(), count);
+}
+
+template<typename _T = int>
+_Range<_T> Range()
+{
+    return _Range<_T>(_T(), std::numeric_limits<_T>::max());
 }
 
 template<typename _T>

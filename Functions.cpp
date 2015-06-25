@@ -40,14 +40,14 @@ int main(void)
      ,   ForEach([](int i){std::cout << i << "\n";})
      );
     std::cout << "------\n";
-    _(   Range(0, 1000)
+    _(   Range(1000)
      ,   Filter([](int i) {return (i % 2) == 0;})
      ,   Take(20)
      ,   Map([](int i){return i+i;})
      ,   ForEach([](int i){std::cout << i << "\n";})
      );
     std::cout << "------\n";
-    _(   Range(0)
+    _(   Range()
      ,   Zip(From(v))
      ,   Zip(Range(100))
      ,   ForEach([](std::tuple<int, int, int>&& v){std::cout << std::get<0>(v) << ":" << std::get<1>(v) << ":" << std::get<2>(v) << "\n";})
@@ -65,12 +65,12 @@ int main(void)
      ,   ForEach([](int i){std::cout << i << "\n";})
      );
     std::cout << "------\n";
-    _(   Range(0, 1000)
+    _(   Range(1000)
      ,   Drop(998)
      ,   ForEach([](int i){std::cout << i << "\n";})
      );
     std::cout << "------\n";
-    int sum = _(   Range(0, 5)
+    int sum = _(   Range(5)
                ,   Reduce(0, [](int a, int b){ return a + b;})
                );
     std::cout << "Sum is: " << sum << "\n";
@@ -79,19 +79,7 @@ int main(void)
     std::cout << tm.elapsed() << "\n";
     tm.restart();
 
-    auto r = _(   Range(0, 10000)
-             ,   Map([](int i) {return i * i;})
-             ,   Reduce(std::vector<int>(), [](std::vector<int>& v, int a)
-                                            {   v.emplace_back(a);
-                                                return v;
-                                            })
-             );
-
-    std::cout << "1: " << tm.elapsed() << "\n";
-
-    tm.restart();
-
-    auto r2 = _(  Range(0, 10000)
+    auto r2 = _(  Range(10000)
              ,   Map([](int i) {return i * i;})
              ,   ToVector<std::vector<int>>()
              );
@@ -107,6 +95,21 @@ int main(void)
         tv.emplace_back(i*i);
     };
     std::cout << "3: " << tm.elapsed() << "\n";
+
+    auto sample = []()
+    {
+        double x = (double)rand() / RAND_MAX;
+        double y = (double)rand() / RAND_MAX;
+        return (x*x + y*y) < 1 ? 1 : 0;
+    };
+
+    const int numSamples = 1000000;
+    auto count = _( Range(numSamples)
+                  , Map([sample](int){ return sample();})
+                  , Reduce(0, [](int a, int b){ return a + b;})
+                  );
+
+    std::cout << "Pi: " << 4.0 * (double) count / (double) numSamples;
 
     return EXIT_SUCCESS;
 }
