@@ -109,7 +109,7 @@ int main(void)
                   , Reduce(0, [](int a, int b){ return a + b;})
                   );
 
-    std::cout << "Pi: " << 4.0 * (double) count / (double) numSamples;
+    std::cout << "Pi: " << 4.0 * (double) count / (double) numSamples << "\n";
 
     return EXIT_SUCCESS;
 }

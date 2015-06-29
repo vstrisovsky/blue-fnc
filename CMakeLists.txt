@@ -8,15 +8,15 @@ include_directories(${Boost_INCLUDE_DIRS})
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_BINARY_DIR}/include/catch)
 
-include(ExternalProject)
-
-add_executable(Functions Functions.cpp)
-
-set_property(TARGET Functions PROPERTY CXX_STANDARD 11)
-
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall")
 
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall")
+
+include(ExternalProject)
+
+add_executable(examples examples/examples.cpp)
+
+set_property(TARGET examples PROPERTY CXX_STANDARD 11)
 
 ExternalProject_Add(CATCH
   PREFIX ${CMAKE_CURRENT_BINARY_DIR}/external
