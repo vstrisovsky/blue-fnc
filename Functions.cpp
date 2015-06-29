@@ -14,7 +14,7 @@
 
 #include <boost/timer.hpp>
 
-#include "functions.h"
+#include "functions.hpp"
 
 struct A
 {
