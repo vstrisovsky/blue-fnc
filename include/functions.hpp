@@ -12,27 +12,29 @@ struct _Range
     static const StepType stepType = StepType::eGenerator;
     typedef Empty InType;
     typedef _T OutType;
-    _T _start, _end, _step;
+    _T _start, _end, _step, _i;
+    bool _dec;
 
     _Range(_T start, _T end)
-    : _start(start), _end(end), _step(_T(1))
+    : _Range(start, end, _T(start > end ? -1 : 1))
     {
     }
 
     _Range(_T start, _T end, _T step)
     : _start(start), _end(end), _step(step)
+    , _i(start), _dec(start > end)
     {
     }
 
     bool hasNext() const
     {
-        return _end > _start;
+        return _dec ? _i > _end : _end > _i;
     }
 
     _T value()
     {
-        _T result = _start;
-        _start += _step;
+        _T result = _i;
+        _i += _step;
         return result;
     }
 };
