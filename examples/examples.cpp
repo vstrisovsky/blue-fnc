@@ -69,6 +69,12 @@ int main(void)
      ,   Drop(998)
      ,   ForEach([](int i){std::cout << i << "\n";})
      );
+     std::cout << "------\n";
+     _(   Range(10, 0)
+      ,   Take(14)
+      ,   ForEach([](int i){std::cout << i << "\n";})
+      );
+     std::cout << "------\n";
     std::cout << "------\n";
     int sum = _(   Range(5)
                ,   Reduce(0, [](int a, int b){ return a + b;})

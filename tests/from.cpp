@@ -12,54 +12,46 @@
 
 #include "functions.hpp"
 
-TEST_CASE("Range generators")
+
+TEST_CASE("From generators")
 {
   Functions _;
 
-  SECTION("Count")
+  SECTION("Initializer list")
   {
     std::stringstream result;
-    _(   Range(10)
+    _(   From({9,8,7,6,5,4,3,2,1,0})
      ,   ForEach([&result](int i){result << i << ",";})
     );
-    CAPTURE(result.str());
+    REQUIRE(result.str() == "9,8,7,6,5,4,3,2,1,0,");
+  }
+
+  SECTION("Vector")
+  {
+    std::stringstream result;
+    _(   From(std::vector<int>({9,8,7,6,5,4,3,2,1,0}))
+     ,   ForEach([&result](int i){result << i << ",";})
+    );
+    REQUIRE(result.str() == "9,8,7,6,5,4,3,2,1,0,");
+  }
+
+  SECTION("Iterators")
+  {
+    std::vector<int> c({9,8,7,6,5,4,3,2,1,0});
+    std::stringstream result;
+    _(   From(c.begin(), c.end())
+     ,   ForEach([&result](int i){result << i << ",";})
+    );
+    REQUIRE(result.str() == "9,8,7,6,5,4,3,2,1,0,");
+  }
+
+  SECTION("Set")
+  {
+    std::stringstream result;
+    _(   From(std::set<int>({9,8,7,6,5,4,3,2,1,0}))
+     ,   ForEach([&result](int i){result << i << ",";})
+    );
     REQUIRE(result.str() == "0,1,2,3,4,5,6,7,8,9,");
   }
-  SECTION("Start, End")
-  {
-    std::stringstream result;
-    _(   Range(0, 10)
-     ,   ForEach([&result](int i){result << i << ",";})
-    );
-    CAPTURE(result.str());
-    REQUIRE(result.str() == "0,1,2,3,4,5,6,7,8,9,");
-  }
-  SECTION("Start, End, Step")
-  {
-    std::stringstream result;
-    _(   Range(0, 10, 2)
-     ,   ForEach([&result](int i){result << i << ",";})
-    );
-    CAPTURE(result.str());
-    REQUIRE(result.str() == "0,2,4,6,8,");
-  }
-  SECTION("Infinite")
-  {
-    std::stringstream result;
-    _(   Range()
-     ,   Take(10)
-     ,   ForEach([&result](int i){result << i << ",";})
-    );
-    CAPTURE(result.str());
-    REQUIRE(result.str() == "0,1,2,3,4,5,6,7,8,9,");
-  }
-  SECTION("Start, End, Negative step")
-  {
-    std::stringstream result;
-    _(   Range(10, 0, -1)
-     ,   ForEach([&result](int i){result << i << ",";})
-    );
-    CAPTURE(result.str());
-    REQUIRE(result.str() == "10,9,8,7,6,5,4,3,2,1,");
-  }
+
 }
