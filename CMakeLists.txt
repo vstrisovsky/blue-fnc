@@ -32,12 +32,11 @@ add_custom_target(update_catch
 
 enable_testing()
 
-set(testName unit-tests)
-
 file(GLOB TEST_SRCS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} tests/*.cpp)
 
 foreach(testSrc ${TEST_SRCS})
         get_filename_component(unitTest ${testSrc} NAME_WE)
+        set(testName ${unitTest})
         add_executable(${testName} ${testSrc})
         set_target_properties(${testName} PROPERTIES RUNTIME_OUTPUT_DIRECTORY tests)
         add_test(NAME ${testName} COMMAND ${CMAKE_CURRENT_BINARY_DIR}/tests/${testName})
