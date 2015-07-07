@@ -38,14 +38,8 @@ file(GLOB TEST_SRCS RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} tests/*.cpp)
 
 foreach(testSrc ${TEST_SRCS})
         get_filename_component(unitTest ${testSrc} NAME_WE)
-
         add_executable(${testName} ${testSrc})
-
-        set_target_properties(${testName} PROPERTIES
-            RUNTIME_OUTPUT_DIRECTORY  tests)
-
-        add_test(NAME ${testName}
-                 COMMAND ${CMAKE_CURRENT_BINARY_DIR}/tests/${testName}
-                )
+        set_target_properties(${testName} PROPERTIES RUNTIME_OUTPUT_DIRECTORY tests)
+        add_test(NAME ${testName} COMMAND ${CMAKE_CURRENT_BINARY_DIR}/tests/${testName})
         set_property(TARGET ${testName} PROPERTY CXX_STANDARD 11)
 endforeach(testSrc)
