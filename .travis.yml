@@ -17,10 +17,11 @@ addons:
       - ubuntu-toolchain-r-test
     packages:
       - g++-4.9
+      - libboost1.55-dev
 
 before_script:
   - wget http://www.cmake.org/files/v3.2/cmake-3.2.3-Linux-x86_64.tar.gz -O /tmp/cmake.tar.gz
-  - tar -xvf /tmp/cmake.tar.gz
+  - tar -xf /tmp/cmake.tar.gz
   - export PATH=$PWD/cmake-3.2.3-Linux-x86_64/bin/:$PATH
   - which cmake
   - mkdir build
