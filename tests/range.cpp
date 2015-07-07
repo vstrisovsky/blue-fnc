@@ -1,9 +1,9 @@
 //============================================================================
-// Name        : Functions.cpp
+// Name        : range.cpp
 // Author      : Vladimir Strisovsky
 // Version     :
 // Copyright   : Your copyright notice
-// Description : Hello World in C, Ansi-style
+// Description : unit tests for range
 //============================================================================
 
 #define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
