@@ -433,6 +433,11 @@ struct _ToVector
     {
     }
 
+    _ToVector(size_t reservedSize)
+    {
+        _result.reserve(reservedSize);
+    }
+
     template<typename _T, typename _F, typename _I>
     bool push(_T&& v, _F& functions, _I)
     {
@@ -456,6 +461,12 @@ template<typename _ResultType>
 _ToVector<_ResultType> ToVector()
 {
     return _ToVector<_ResultType>();
+}
+
+template<typename _ResultType>
+_ToVector<_ResultType> ToVector(size_t reservedSize)
+{
+    return _ToVector<_ResultType>(reservedSize);
 }
 
 #endif /* _FUNCTIONS_H_ */

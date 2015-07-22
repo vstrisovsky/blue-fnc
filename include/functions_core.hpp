@@ -65,6 +65,18 @@ struct Return<void>
     }
 };
 
+template<int _Index, typename _Functions>
+void iterate(_Functions& f)
+{
+    bool cont = true;
+    while(cont && std::get<_Index>(f).hasNext())
+    {
+        cont = std::get<_Index+1>(f).push(std::get<_Index>(f).value(), f, Int<_Index+1>());
+    };
+    std::get<_Index+1>(f).finish(f, Int<_Index+1>());
+}
+
+
 struct Functions
 {
     template<typename ... _T>
@@ -75,13 +87,8 @@ struct Functions
         typedef typename ChainTypes::TupleType type;
 
         type functions(std::forward<_T>(t)...);
-        // todo the next lines move to container node
-        bool cont = true;
-        while(cont && std::get<0>(functions).hasNext())
-        {
-            cont = std::get<1>(functions).push(std::get<0>(functions).value(), functions, Int<1>());
-        };
-        std::get<1>(functions).finish(functions, Int<1>());
+
+        iterate<0>(functions);
 
         return Return<typename ChainTypes::ResultType>::get(std::get<ChainTypes::size - 1>(functions));
     }
