@@ -433,11 +433,6 @@ struct _ToVector
     {
     }
 
-    _ToVector(size_t reservedSize)
-    {
-        _result.reserve(reservedSize);
-    }
-
     template<typename _T, typename _F, typename _I>
     bool push(_T&& v, _F& functions, _I)
     {
@@ -463,10 +458,117 @@ _ToVector<_ResultType> ToVector()
     return _ToVector<_ResultType>();
 }
 
-template<typename _ResultType>
-_ToVector<_ResultType> ToVector(size_t reservedSize)
+template<typename _Fnc>
+struct _AllOf
 {
-    return _ToVector<_ResultType>(reservedSize);
+    static const StepType stepType = StepType::eReducer;
+    _Fnc _fnc;
+    typedef bool ResultType;
+    ResultType _result;
+    _AllOf(_Fnc&& fnc)
+    : _fnc(fnc)
+    , _result(true)
+    {
+    }
+
+    template<typename _T, typename _F, typename _I>
+    bool push(_T&& v, _F& functions, _I)
+    {
+        _result = _fnc(v);
+        return _result;
+    }
+
+    template<typename _F, typename _I>
+    void finish(_F& functions, _I)
+    {
+    }
+
+    ResultType get()
+    {
+        return _result;
+    }
+
+};
+
+template<typename _Fnc>
+_AllOf<_Fnc> AllOf(_Fnc&& fnc)
+{
+    return _AllOf<_Fnc>(std::move(fnc));
 }
 
+template<typename _Fnc>
+struct _AnyOf
+{
+    static const StepType stepType = StepType::eReducer;
+    _Fnc _fnc;
+    typedef bool ResultType;
+    ResultType _result;
+    _AnyOf(_Fnc&& fnc)
+    : _fnc(fnc)
+    , _result(true)
+    {
+    }
+
+    template<typename _T, typename _F, typename _I>
+    bool push(_T&& v, _F& functions, _I)
+    {
+        _result = _fnc(v);
+        return !_result;
+    }
+
+    template<typename _F, typename _I>
+    void finish(_F& functions, _I)
+    {
+    }
+
+    ResultType get()
+    {
+        return _result;
+    }
+
+};
+
+template<typename _Fnc>
+_AnyOf<_Fnc> AnyOf(_Fnc&& fnc)
+{
+    return _AnyOf<_Fnc>(std::move(fnc));
+}
+
+template<typename _Fnc>
+struct _NoneOf
+{
+    static const StepType stepType = StepType::eReducer;
+    _Fnc _fnc;
+    typedef bool ResultType;
+    ResultType _result;
+    _NoneOf(_Fnc&& fnc)
+    : _fnc(fnc)
+    , _result(true)
+    {
+    }
+
+    template<typename _T, typename _F, typename _I>
+    bool push(_T&& v, _F& functions, _I)
+    {
+        _result = !_fnc(v);
+        return _result;
+    }
+
+    template<typename _F, typename _I>
+    void finish(_F& functions, _I)
+    {
+    }
+
+    ResultType get()
+    {
+        return _result;
+    }
+
+};
+
+template<typename _Fnc>
+_NoneOf<_Fnc> NoneOf(_Fnc&& fnc)
+{
+    return _NoneOf<_Fnc>(std::move(fnc));
+}
 #endif /* _FUNCTIONS_H_ */
