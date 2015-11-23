@@ -35,4 +35,13 @@ TEST_CASE("Take")
     );
     REQUIRE(result.str() == "abcde");
   }
+  SECTION("TakeWhile")
+  {
+    std::stringstream result;
+    _(   Range(10)
+     ,   TakeWhile([](int i){return i < 5;})
+     ,   ForEach([&result](char i){result << i;})
+    );
+    REQUIRE(result.str() == "abcde");
+  }
 }

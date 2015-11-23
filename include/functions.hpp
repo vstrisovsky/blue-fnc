@@ -315,6 +315,40 @@ _Filter<_Fnc> Filter(_Fnc&& fnc)
     return _Filter<_Fnc>(std::move(fnc));
 }
 
+template<typename _Pred>
+struct _TakeWhile
+{
+    static const StepType stepType = StepType::eLimiter;
+    _Pred _pred;
+
+    _TakeWhile(_Pred&& pred)
+    : _pred(pred)
+    {
+    }
+
+    template<typename _T, typename _F, typename _I>
+    bool push(_T&& v, _F& functions, _I)
+    {
+        if(_pred(v))
+        {
+            typedef typename _I::Next Next;
+            return std::get<_I::i+1>(functions).push(std::move(v), functions, Next());
+        }
+        return false;
+    }
+
+    template<typename _F, typename _I>
+    void finish(_F& functions, _I)
+    {
+    }
+};
+
+template<typename _Pred>
+_TakeWhile<_Pred> TakeWhile(_Pred&& pred)
+{
+    return _TakeWhile<_Pred>(std::move(pred));
+}
+
 struct _Take
 {
     static const StepType stepType = StepType::eLimiter;
@@ -433,6 +467,11 @@ struct _ToVector
     {
     }
 
+    _ToVector(size_t sz)
+    {
+      _result.reserve(sz);
+    }
+
     template<typename _T, typename _F, typename _I>
     bool push(_T&& v, _F& functions, _I)
     {
@@ -456,6 +495,12 @@ template<typename _ResultType>
 _ToVector<_ResultType> ToVector()
 {
     return _ToVector<_ResultType>();
+}
+
+template<typename _ResultType>
+_ToVector<_ResultType> ToVector(size_t sz)
+{
+    return _ToVector<_ResultType>(sz);
 }
 
 template<typename _Fnc>
