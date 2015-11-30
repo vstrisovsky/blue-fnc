@@ -40,8 +40,8 @@ TEST_CASE("Take")
     std::stringstream result;
     _(   Range(10)
      ,   TakeWhile([](int i){return i < 5;})
-     ,   ForEach([&result](char i){result << i;})
+     ,   ForEach([&result](int i){result << i << ",";})
     );
-    REQUIRE(result.str() == "abcde");
+    REQUIRE(result.str() == "0,1,2,3,4,");
   }
 }
