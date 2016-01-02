@@ -102,11 +102,11 @@ int main(void)
 
     tm.restart();
 
-    auto r2 = _( Range(perfCount)
-               , Map([](int i) {return i * i;})
-               , Filter([](int i){ return i % 2;})
-               , Drop(perfCount/2)
-               , ToVector<std::vector<int>>(perfCount)
+    auto r2 = _( range(perfCount)
+               , map([](int i) {return i * i;})
+               , filter([](int i){ return i % 2;})
+               , drop(perfCount/2)
+               , tovector<std::vector<int>>(perfCount)
                );
 
     std::cout << "blue-fnc: " << tm.elapsed() << "\n";

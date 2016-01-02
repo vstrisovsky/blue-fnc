@@ -41,25 +41,25 @@ struct _Range
 
 
 template<typename _T>
-_Range<_T> Range(_T start, _T end, _T step)
+_Range<_T> range(_T start, _T end, _T step)
 {
     return _Range<_T>(start, end, step);
 }
 
 template<typename _T>
-_Range<_T> Range(_T start, _T end)
+_Range<_T> range(_T start, _T end)
 {
     return _Range<_T>(start, end);
 }
 
 template<typename _T>
-_Range<_T> Range(_T count)
+_Range<_T> range(_T count)
 {
     return _Range<_T>(_T(), count);
 }
 
 template<typename _T = int>
-_Range<_T> Range()
+_Range<_T> range()
 {
     return _Range<_T>(_T(), std::numeric_limits<_T>::max());
 }
@@ -100,19 +100,19 @@ struct _From
 };
 
 template<typename _T>
-_From<typename _T::const_iterator> From(const _T& coll)
+_From<typename _T::const_iterator> from(const _T& coll)
 {
     return _From<typename _T::const_iterator>(std::begin(coll), std::end(coll));
 }
 
 template<typename _T>
-_From<_T> From(_T start, _T end)
+_From<_T> from(_T start, _T end)
 {
     return _From<_T>(start, end);
 }
 
 template<typename _T>
-_From<typename std::initializer_list<_T>::const_iterator> From(std::initializer_list<_T>&& coll)
+_From<typename std::initializer_list<_T>::const_iterator> from(std::initializer_list<_T>&& coll)
 {
     return _From<typename std::initializer_list<_T>::const_iterator>(coll.begin(), coll.end());
 }
@@ -160,7 +160,7 @@ struct _Zip
 };
 
 template<typename _Gen>
-_Zip<_Gen> Zip(_Gen&& gen)
+_Zip<_Gen> zip(_Gen&& gen)
 {
     return _Zip<_Gen>(std::move(gen));
 }
@@ -244,7 +244,7 @@ struct _Map<_Fnc, typename std::enable_if<std::is_member_object_pointer<_Fnc>::v
 };
 
 template<typename _Fnc>
-_Map<_Fnc> Map(_Fnc&& fnc)
+_Map<_Fnc> map(_Fnc&& fnc)
 {
     return _Map<_Fnc>(std::move(fnc));
 }
@@ -274,7 +274,7 @@ struct _ForEach
 };
 
 template<typename _Fnc>
-_ForEach<_Fnc> ForEach(_Fnc&& fnc)
+_ForEach<_Fnc> foreach(_Fnc&& fnc)
 {
     return _ForEach<_Fnc>(std::move(fnc));
 }
@@ -310,7 +310,7 @@ struct _Filter
 };
 
 template<typename _Fnc>
-_Filter<_Fnc> Filter(_Fnc&& fnc)
+_Filter<_Fnc> filter(_Fnc&& fnc)
 {
     return _Filter<_Fnc>(std::move(fnc));
 }
@@ -344,7 +344,7 @@ struct _TakeWhile
 };
 
 template<typename _Pred>
-_TakeWhile<_Pred> TakeWhile(_Pred&& pred)
+_TakeWhile<_Pred> takewhile(_Pred&& pred)
 {
     return _TakeWhile<_Pred>(std::move(pred));
 }
@@ -376,7 +376,7 @@ struct _Take
     }
 };
 
-_Take Take(int count)
+_Take take(int count)
 {
     return _Take(count);
 }
@@ -409,7 +409,7 @@ struct _Drop
     }
 };
 
-_Drop Drop(int count)
+_Drop drop(int count)
 {
     return _Drop(count);
 }
@@ -449,7 +449,7 @@ struct _Reduce
 };
 
 template<typename _ResultType, typename _Fnc>
-_Reduce<_ResultType, _Fnc> Reduce(_ResultType initialValue, _Fnc fnc)
+_Reduce<_ResultType, _Fnc> reduce(_ResultType initialValue, _Fnc fnc)
 {
     return _Reduce<_ResultType, _Fnc>(initialValue, fnc);
 }
@@ -492,13 +492,13 @@ struct _ToVector
 };
 
 template<typename _ResultType>
-_ToVector<_ResultType> ToVector()
+_ToVector<_ResultType> tovector()
 {
     return _ToVector<_ResultType>();
 }
 
 template<typename _ResultType>
-_ToVector<_ResultType> ToVector(size_t sz)
+_ToVector<_ResultType> tovector(size_t sz)
 {
     return _ToVector<_ResultType>(sz);
 }
@@ -536,7 +536,7 @@ struct _AllOf
 };
 
 template<typename _Fnc>
-_AllOf<_Fnc> AllOf(_Fnc&& fnc)
+_AllOf<_Fnc> allof(_Fnc&& fnc)
 {
     return _AllOf<_Fnc>(std::move(fnc));
 }
@@ -574,7 +574,7 @@ struct _AnyOf
 };
 
 template<typename _Fnc>
-_AnyOf<_Fnc> AnyOf(_Fnc&& fnc)
+_AnyOf<_Fnc> anyof(_Fnc&& fnc)
 {
     return _AnyOf<_Fnc>(std::move(fnc));
 }
@@ -612,7 +612,7 @@ struct _NoneOf
 };
 
 template<typename _Fnc>
-_NoneOf<_Fnc> NoneOf(_Fnc&& fnc)
+_NoneOf<_Fnc> noneof(_Fnc&& fnc)
 {
     return _NoneOf<_Fnc>(std::move(fnc));
 }

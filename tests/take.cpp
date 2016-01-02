@@ -20,27 +20,27 @@ TEST_CASE("Take")
   SECTION("Range and take")
   {
     std::stringstream result;
-    _(   Range(10)
-     ,   Take(5)
-     ,   ForEach([&result](int i){result << i << ",";})
+    _(   range(10)
+     ,   take(5)
+     ,   foreach([&result](int i){result << i << ",";})
     );
     REQUIRE(result.str() == "0,1,2,3,4,");
   }
   SECTION("From and take")
   {
     std::stringstream result;
-    _(   From(std::string("abcdefghijkl"))
-     ,   Take(5)
-     ,   ForEach([&result](char i){result << i;})
+    _(   from(std::string("abcdefghijkl"))
+     ,   take(5)
+     ,   foreach([&result](char i){result << i;})
     );
     REQUIRE(result.str() == "abcde");
   }
   SECTION("TakeWhile")
   {
     std::stringstream result;
-    _(   Range(10)
-     ,   TakeWhile([](int i){return i < 5;})
-     ,   ForEach([&result](int i){result << i << ",";})
+    _(   range(10)
+     ,   takewhile([](int i){return i < 5;})
+     ,   foreach([&result](int i){result << i << ",";})
     );
     REQUIRE(result.str() == "0,1,2,3,4,");
   }

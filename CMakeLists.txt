@@ -17,17 +17,17 @@ add_executable(examples examples/examples.cpp)
 
 set_property(TARGET examples PROPERTY CXX_STANDARD 11)
 
-ExternalProject_Add(CATCH
-  PREFIX ${CMAKE_CURRENT_BINARY_DIR}/external
-  GIT_REPOSITORY https://github.com/dreal-deps/Catch.git
-  CONFIGURE_COMMAND echo "nothing to configure"
-  BUILD_COMMAND echo "nothing to build"
-  BUILD_IN_SOURCE 1
-  INSTALL_COMMAND mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/include/catch && cp -v single_include/catch.hpp ${CMAKE_CURRENT_BINARY_DIR}/include/catch/)
+# ExternalProject_Add(CATCH
+#  PREFIX ${CMAKE_CURRENT_BINARY_DIR}/external
+#   GIT_REPOSITORY https://github.com/dreal-deps/Catch.git
+#   CONFIGURE_COMMAND echo "nothing to configure"
+#   BUILD_COMMAND echo "nothing to build"
+#   BUILD_IN_SOURCE 1
+#   INSTALL_COMMAND mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/include/catch && cp -v single_include/catch.hpp ${CMAKE_CURRENT_BINARY_DIR}/include/catch/)
 
-add_custom_target(update_catch
-  COMMAND git fetch --all && git reset --hard origin/master && mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/include/catch && cp -v single_include/catch.hpp ${CMAKE_CURRENT_BINARY_DIR}/include/catch/
-  WORKING_DIRECTORY ${DREAL_BINARY_DIR}/external/src/CATCH)
+# add_custom_target(update_catch
+#   COMMAND git fetch --all && git reset --hard origin/master && mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/include/catch && cp -v single_include/catch.hpp ${CMAKE_CURRENT_BINARY_DIR}/include/catch/
+#   WORKING_DIRECTORY ${DREAL_BINARY_DIR}/external/src/CATCH)
 
 enable_testing()
 

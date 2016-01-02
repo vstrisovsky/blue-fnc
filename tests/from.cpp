@@ -20,8 +20,8 @@ TEST_CASE("From generators")
   SECTION("Initializer list")
   {
     std::stringstream result;
-    _(   From({9,8,7,6,5,4,3,2,1,0})
-     ,   ForEach([&result](int i){result << i << ",";})
+    _(   from({9,8,7,6,5,4,3,2,1,0})
+     ,   foreach([&result](int i){result << i << ",";})
     );
     REQUIRE(result.str() == "9,8,7,6,5,4,3,2,1,0,");
   }
@@ -29,8 +29,8 @@ TEST_CASE("From generators")
   SECTION("Vector")
   {
     std::stringstream result;
-    _(   From(std::vector<int>({9,8,7,6,5,4,3,2,1,0}))
-     ,   ForEach([&result](int i){result << i << ",";})
+    _(   from(std::vector<int>({9,8,7,6,5,4,3,2,1,0}))
+     ,   foreach([&result](int i){result << i << ",";})
     );
     REQUIRE(result.str() == "9,8,7,6,5,4,3,2,1,0,");
   }
@@ -39,8 +39,8 @@ TEST_CASE("From generators")
   {
     std::vector<int> c({9,8,7,6,5,4,3,2,1,0});
     std::stringstream result;
-    _(   From(c.begin(), c.end())
-     ,   ForEach([&result](int i){result << i << ",";})
+    _(   from(c.begin(), c.end())
+     ,   foreach([&result](int i){result << i << ",";})
     );
     REQUIRE(result.str() == "9,8,7,6,5,4,3,2,1,0,");
   }
@@ -48,8 +48,8 @@ TEST_CASE("From generators")
   SECTION("Set")
   {
     std::stringstream result;
-    _(   From(std::set<int>({9,8,7,6,5,4,3,2,1,0}))
-     ,   ForEach([&result](int i){result << i << ",";})
+    _(   from(std::set<int>({9,8,7,6,5,4,3,2,1,0}))
+     ,   foreach([&result](int i){result << i << ",";})
     );
     REQUIRE(result.str() == "0,1,2,3,4,5,6,7,8,9,");
   }

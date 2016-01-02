@@ -20,9 +20,9 @@ TEST_CASE("Zip")
   SECTION("String + Infinite range")
   {
     std::stringstream result;
-    _(   From(std::string("abcd"))
-     ,   Zip(Range())
-     ,   ForEach([&result](std::tuple<char, int>&& i)
+    _(   from(std::string("abcd"))
+     ,   zip(range())
+     ,   foreach([&result](std::tuple<char, int>&& i)
          {
            result << "(" << std::get<0>(i) << "," << std::get<1>(i) << ")";
         })
@@ -32,9 +32,9 @@ TEST_CASE("Zip")
   SECTION("Infinite range + String")
   {
     std::stringstream result;
-    _(   Range()
-     ,   Zip(From(std::string("abcd")))
-     ,   ForEach([&result](std::tuple<int, char>&& i)
+    _(   range()
+     ,   zip(from(std::string("abcd")))
+     ,   foreach([&result](std::tuple<int, char>&& i)
          {
            result << "(" << std::get<0>(i) << "," << std::get<1>(i) << ")";
         })

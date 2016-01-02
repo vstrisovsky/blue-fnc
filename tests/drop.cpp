@@ -20,18 +20,18 @@ TEST_CASE("Drop")
   SECTION("Range and drop")
   {
     std::stringstream result;
-    _(   Range(10)
-     ,   Drop(5)
-     ,   ForEach([&result](int i){result << i << ",";})
+    _(   range(10)
+     ,   drop(5)
+     ,   foreach([&result](int i){result << i << ",";})
     );
     REQUIRE(result.str() == "5,6,7,8,9,");
   }
   SECTION("From and drop")
   {
     std::stringstream result;
-    _(   From(std::string("abcdefghijkl"))
-     ,   Drop(5)
-     ,   ForEach([&result](char i){result << i;})
+    _(   from(std::string("abcdefghijkl"))
+     ,   drop(5)
+     ,   foreach([&result](char i){result << i;})
     );
     REQUIRE(result.str() == "fghijkl");
   }

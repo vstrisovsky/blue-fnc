@@ -20,8 +20,8 @@ TEST_CASE("Any")
   SECTION("AnyOf")
   {
     bool result =
-      _(   From({1,2,3,4,5,6,7})
-       ,   AnyOf([](int i){return i == 4;})
+      _(   from({1,2,3,4,5,6,7})
+       ,   anyof([](int i){return i == 4;})
        );
     REQUIRE(result == true);
   }
@@ -29,8 +29,54 @@ TEST_CASE("Any")
   SECTION("AnyOf")
   {
     bool result =
-      _(   From({1,2,3,4,5,6,7})
-       ,   AnyOf([](int i){return i == 8;})
+      _(   from({1,2,3,4,5,6,7})
+       ,   anyof([](int i){return i == 8;})
+       );
+    REQUIRE(result == false);
+  }
+}
+
+TEST_CASE("All")
+{
+  Functions _;
+
+  SECTION("AllOf")
+  {
+    bool result =
+      _(   from({1,2,3,4,5,6,7})
+       ,   anyof([](int i){return i > 0;})
+       );
+    REQUIRE(result == true);
+  }
+
+  SECTION("AllOf")
+  {
+    bool result =
+      _(   from({1,2,3,4,5,6,7})
+       ,   anyof([](int i){return i == 8;})
+       );
+    REQUIRE(result == false);
+  }
+}
+
+TEST_CASE("None")
+{
+  Functions _;
+
+  SECTION("NoneOf")
+  {
+    bool result =
+      _(   from({1,2,3,4,5,6,7})
+       ,   anyof([](int i){return i == 0;})
+       );
+    REQUIRE(result == true);
+  }
+
+  SECTION("NoneOf")
+  {
+    bool result =
+      _(   from({1,2,3,4,5,6,7})
+       ,   noneof([](int i){return i == 3;})
        );
     REQUIRE(result == false);
   }

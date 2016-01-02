@@ -19,8 +19,8 @@ TEST_CASE("Range generators")
   SECTION("Count")
   {
     std::stringstream result;
-    _(   Range(10)
-     ,   ForEach([&result](int i){result << i << ",";})
+    _(   range(10)
+     ,   foreach([&result](int i){result << i << ",";})
     );
     CAPTURE(result.str());
     REQUIRE(result.str() == "0,1,2,3,4,5,6,7,8,9,");
@@ -28,8 +28,8 @@ TEST_CASE("Range generators")
   SECTION("Start, End")
   {
     std::stringstream result;
-    _(   Range(0, 10)
-     ,   ForEach([&result](int i){result << i << ",";})
+    _(   range(0, 10)
+     ,   foreach([&result](int i){result << i << ",";})
     );
     CAPTURE(result.str());
     REQUIRE(result.str() == "0,1,2,3,4,5,6,7,8,9,");
@@ -37,8 +37,8 @@ TEST_CASE("Range generators")
   SECTION("Start, End, Step")
   {
     std::stringstream result;
-    _(   Range(0, 10, 2)
-     ,   ForEach([&result](int i){result << i << ",";})
+    _(   range(0, 10, 2)
+     ,   foreach([&result](int i){result << i << ",";})
     );
     CAPTURE(result.str());
     REQUIRE(result.str() == "0,2,4,6,8,");
@@ -46,9 +46,9 @@ TEST_CASE("Range generators")
   SECTION("Infinite")
   {
     std::stringstream result;
-    _(   Range()
-     ,   Take(10)
-     ,   ForEach([&result](int i){result << i << ",";})
+    _(   range()
+     ,   take(10)
+     ,   foreach([&result](int i){result << i << ",";})
     );
     CAPTURE(result.str());
     REQUIRE(result.str() == "0,1,2,3,4,5,6,7,8,9,");
@@ -56,8 +56,8 @@ TEST_CASE("Range generators")
   SECTION("Start, End, Negative step")
   {
     std::stringstream result;
-    _(   Range(10, 0, -1)
-     ,   ForEach([&result](int i){result << i << ",";})
+    _(   range(10, 0, -1)
+     ,   foreach([&result](int i){result << i << ",";})
     );
     CAPTURE(result.str());
     REQUIRE(result.str() == "10,9,8,7,6,5,4,3,2,1,");
