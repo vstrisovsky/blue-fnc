@@ -23,7 +23,7 @@ addons:
 #      - install /usr/bin/g++ g++ /usr/bin/g++-4.9 90
 
 before_script:
-  - wget https://cmake.org/files/v3.3/cmake-3.3.2-Linux-x86_64.tar.gz -O --no-check-certificate /tmp/cmake.tar.gz
+  - curl -L -o /tmp/cmake.tar.gz https://cmake.org/files/v3.3/cmake-3.3.2-Linux-x86_64.tar.gz
   - tar -xf /tmp/cmake.tar.gz
   - export PATH=$PWD/cmake-3.2.3-Linux-x86_64/bin/:$PATH
   - which cmake
