@@ -67,7 +67,7 @@ TEST_CASE("None")
   {
     bool result =
       _(   from({1,2,3,4,5,6,7})
-       ,   anyof([](int i){return i == 0;})
+       ,   noneof([](int i){return i == 0;})
        );
     REQUIRE(result == true);
   }
