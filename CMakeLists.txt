@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.1)
 
 project("Functions")
 
+SET(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 find_package(Boost REQUIRED)
 
 include_directories(${Boost_INCLUDE_DIRS})
@@ -9,7 +11,7 @@ include_directories(${Boost_INCLUDE_DIRS})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include ${CMAKE_CURRENT_BINARY_DIR}/include/catch)
 
 set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g -Wall")
-set(CMAKE_CXX_FLAGS_RELEASE "-O2 -g -Wall")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -g -Wall")
 
 include(ExternalProject)
 

@@ -6,6 +6,9 @@
 // Description : Hello World in C, Ansi-style
 //============================================================================
 
+#include "functions.hpp"
+#include "placeholder.hpp"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
@@ -13,8 +16,6 @@
 #include <typeinfo>
 
 #include <boost/timer.hpp>
-
-#include "functions.hpp"
 
 struct A
 {
@@ -28,15 +29,15 @@ struct A
 
 int main(void)
 {
-    //std::vector<int> v = {1,3,5,67,33,56,44,45,67,76,67,789};
+  std::vector<int> v = {1,3,5,67,33,56,44,45,67,76,67,789};
 
-    Functions _;
+  Functions fnc;
 
-    // _(   From({9,8,7,6,5,4,3,2,1,0})
-    //  ,   Filter([](int i) {return (i % 2) == 0;})
-    //  ,   Map([](int i){return i+i;})
-    //  ,   ForEach([](int i){std::cout << i << "\n";})
-    //  );
+  fnc(   from({9,8,7,6,5,4,3,2,1,0})
+     ,   map([](int i){ return i*i;})
+     ,   filter(_ > 5)
+     ,   foreach([](int i){std::cout << i << " ";})
+     );
     // std::cout << "------\n";
     // _(   Range(1000)
     //  ,   Filter([](int i) {return (i % 2) == 0;})
@@ -102,11 +103,11 @@ int main(void)
 
     tm.restart();
 
-    auto r2 = _( range(perfCount)
-               , map([](int i) {return i * i;})
-               , filter([](int i){ return i % 2;})
-               , drop(perfCount/2)
-               , tovector<std::vector<int>>(perfCount)
+    auto r2 = fnc( range(perfCount)
+                 , map([](int i) {return i * i;})
+                 , filter([](int i){ return i % 2;})
+                 , drop(perfCount/2)
+                 , tovector<std::vector<int>>(perfCount)
                );
 
     std::cout << "blue-fnc: " << tm.elapsed() << "\n";

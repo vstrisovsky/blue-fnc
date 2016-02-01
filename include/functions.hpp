@@ -432,7 +432,7 @@ struct _Reduce
     template<typename _T, typename _F, typename _I>
     bool push(_T&& v, _F& functions, _I)
     {
-        typedef typename _I::Next Next;
+        //typedef typename _I::Next Next;
         _result = _fnc(_result, v);
         return true;
     }
@@ -475,7 +475,7 @@ struct _ToVector
     template<typename _T, typename _F, typename _I>
     bool push(_T&& v, _F& functions, _I)
     {
-        typedef typename _I::Next Next;
+        //typedef typename _I::Next Next;
         _result.emplace_back(std::move(v));
         return true;
     }
