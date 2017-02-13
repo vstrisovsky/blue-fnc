@@ -54,4 +54,22 @@ TEST_CASE("From generators")
     REQUIRE(result.str() == "0,1,2,3,4,5,6,7,8,9,");
   }
 
+  SECTION("Array")
+  {
+    int arr[] = {9,8,7,6,5,4,3,2,1,0};
+    std::stringstream result;
+    _(   fromArray(arr)
+     ,   foreach([&result](int i){result << i << ",";})
+    );
+    REQUIRE(result.str() == "9,8,7,6,5,4,3,2,1,0,");
+  }
+
+  SECTION("String")
+  {
+    std::stringstream result;
+    _(   fromArray("bbsbdbdh")
+     ,   foreach([&result](int i){result << i << ",";})
+    );
+    REQUIRE(result.str() == "9,8,7,6,5,4,3,2,1,0,");
+  }
 }

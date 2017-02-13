@@ -106,15 +106,21 @@ _From<typename _T::const_iterator> from(const _T& coll)
 }
 
 template<typename _T>
+_From<typename std::initializer_list<_T>::const_iterator> from(std::initializer_list<_T>&& coll)
+{
+    return _From<typename std::initializer_list<_T>::const_iterator>(coll.begin(), coll.end());
+}
+
+template<typename _T>
 _From<_T> from(_T start, _T end)
 {
     return _From<_T>(start, end);
 }
 
-template<typename _T>
-_From<typename std::initializer_list<_T>::const_iterator> from(std::initializer_list<_T>&& coll)
+template<typename _T, std::size_t _Count>
+_From<const _T*> fromArray(_T(&arr)[_Count])
 {
-    return _From<typename std::initializer_list<_T>::const_iterator>(coll.begin(), coll.end());
+    return _From<const _T*>(arr, arr + _Count);
 }
 
 template<typename _Gen>

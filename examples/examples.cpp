@@ -27,8 +27,20 @@ struct A
     int x;
 };
 
+int hamming(const std::string& stride1, const std::string& stride2)
+{
+    Functions fnc;
+    return fnc  (   from(stride1)
+                ,   zip(from(stride2))
+                ,   filter([](std::tuple<char, char> chs){ return std::get<0>(chs) != std::get<1>(chs); })
+                ,   reduce(0u, [](int c, std::tuple<char, char>){ return c+1; })
+            );
+}
+
 int main(void)
 {
+  std::cout << "Hamming distance: " << hamming("ACCAGGG", "ACTATGG") << std::endl;
+
   std::vector<int> v = {1,3,5,67,33,56,44,45,67,76,67,789};
 
   Functions fnc;
