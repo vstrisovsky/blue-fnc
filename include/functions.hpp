@@ -64,6 +64,36 @@ _Range<_T> range()
     return _Range<_T>(_T(), std::numeric_limits<_T>::max());
 }
 
+template<typename _Fnc>
+struct _Repeatedly
+{
+    static const StepType stepType = StepType::eGenerator;
+    typedef Empty InType;
+    typedef typename ReturnType<_Fnc>::type OutType;
+    _Fnc mFnc;
+
+    _Repeatedly(_Fnc&& fnc)
+    : mFnc(fnc)
+    {
+    }
+
+    bool hasNext() const
+    {
+        return true;
+    }
+
+    OutType value()
+    {
+        return mFnc();
+    }
+};
+
+template<typename _Fnc>
+_Repeatedly<_Fnc> repeatedly(_Fnc&& fnc)
+{
+    return _Repeatedly<_Fnc>(std::move(fnc));
+}
+
 template<typename _T>
 struct _FromValueType
 {
@@ -115,6 +145,12 @@ template<typename _T>
 _From<_T> from(_T start, _T end)
 {
     return _From<_T>(start, end);
+}
+
+template<std::size_t _Count>
+_From<const char*> fromArray(char(&arr)[_Count])
+{
+    return _From<const char*>(arr, arr + _Count - 1);
 }
 
 template<typename _T, std::size_t _Count>

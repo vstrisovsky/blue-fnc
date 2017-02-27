@@ -67,9 +67,9 @@ TEST_CASE("From generators")
   SECTION("String")
   {
     std::stringstream result;
-    _(   fromArray("bbsbdbdh")
+    _(   fromArray("ABC")
      ,   foreach([&result](int i){result << i << ",";})
     );
-    REQUIRE(result.str() == "9,8,7,6,5,4,3,2,1,0,");
+    REQUIRE(result.str() == "65,66,67,");
   }
 }

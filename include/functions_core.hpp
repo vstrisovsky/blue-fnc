@@ -65,6 +65,12 @@ struct Return<void>
     }
 };
 
+template<typename _Fnc>
+struct ReturnType
+{
+    typedef typename std::result_of<_Fnc()>::type type;
+};
+
 template<int _Index, typename _Functions>
 void iterate(_Functions& f)
 {
