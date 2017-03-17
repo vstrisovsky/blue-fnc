@@ -95,6 +95,36 @@ _Repeatedly<_Fnc> repeatedly(_Fnc&& fnc)
 }
 
 template<typename _T>
+struct _Repeat
+{
+    static const StepType stepType = StepType::eGenerator;
+    typedef Empty InType;
+    typedef _T OutType;
+    _T mValue;
+
+    _Repeat(_T&& v)
+    : mValue(v)
+    {
+    }
+
+    bool hasNext() const
+    {
+        return true;
+    }
+
+    const OutType& value()
+    {
+        return mValue;
+    }
+};
+
+template<typename _T>
+_Repeat<_T> repeat(_T&& v)
+{
+    return _Repeat<_T>(std::move(v));
+}
+
+template<typename _T>
 struct _FromValueType
 {
     typedef typename _T::value_type type;
