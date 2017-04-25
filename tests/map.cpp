@@ -11,6 +11,7 @@
 #include <sstream>
 
 #include "functions.hpp"
+#include "test_result.hpp"
 
 template<typename _T>
 int pow(int v)
@@ -42,61 +43,61 @@ TEST_CASE("map")
 
   SECTION("from char to another char")
   {
-    std::stringstream result;
+    TestStringResult result =
     _(   from(std::string("abcde"))
      ,   map([](char ch)  { return ch + 1;})
-     ,   foreach([&result](char ch){result << ch;})
+     ,   tovector<TestStringResult>()
     );
-    REQUIRE(result.str() == "bcdef");
+    REQUIRE(result == TestStringResult("bcdef"));
   }
 
   SECTION("from char to int")
   {
-    std::stringstream result;
+    TestResult result =
     _(   from(std::string("abcde"))
      ,   map([](char ch) -> int { return ch - 'a';})
-     ,   foreach([&result](int i){result << i << ",";})
+     ,   tovector<TestResult>()
     );
-    REQUIRE(result.str() == "0,1,2,3,4,");
+    REQUIRE(result == TestResult({0,1,2,3,4}));
   }
 
   SECTION("map via function")
   {
-    std::stringstream result;
+    TestResult result =
     _(   from({0,1,2,3,4})
      ,   map(pow<int>)
-     ,   foreach([&result](int i){result << i << ",";})
+     ,   tovector<TestResult>()
     );
-    REQUIRE(result.str() == "0,1,4,9,16,");
+    REQUIRE(result == TestResult({0,1,4,9,16}));
   }
 
   SECTION("map via function object")
   {
-    std::stringstream result;
+    TestResult result =
     _(   from({0,1,2,3,4})
      ,   map(Pow<int>())
-     ,   foreach([&result](int i){result << i << ",";})
+     ,   tovector<TestResult>()
     );
-    REQUIRE(result.str() == "0,1,4,9,16,");
+    REQUIRE(result == TestResult({0,1,4,9,16}));
   }
 
   SECTION("map via pointer to member variable")
   {
-    std::stringstream result;
+    TestResult result =
     _(   from({A{0},A{1},A{2},A{3},A{4}})
      ,   map(&A::v)
-     ,   foreach([&result](int i){result << i << ",";})
+     ,   tovector<TestResult>()
     );
-    REQUIRE(result.str() == "0,1,2,3,4,");
+    REQUIRE(result == TestResult({0,1,2,3,4}));
   }
 
   SECTION("map via pointer to member variable")
   {
-    std::stringstream result;
+    TestResult result =
     _(   from({A{0},A{1},A{2},A{3},A{4}})
      ,   map(&A::get)
-     ,   foreach([&result](int i){result << i << ",";})
+     ,   tovector<TestResult>()
     );
-    REQUIRE(result.str() == "0,1,2,3,4,");
+    REQUIRE(result == TestResult({0,1,2,3,4}));
   }
 }

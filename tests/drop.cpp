@@ -11,7 +11,7 @@
 #include <sstream>
 
 #include "functions.hpp"
-
+#include "test_result.hpp"
 
 TEST_CASE("Drop")
 {
@@ -19,20 +19,20 @@ TEST_CASE("Drop")
 
   SECTION("Range and drop")
   {
-    std::stringstream result;
+    TestResult result =
     _(   range(10)
      ,   drop(5)
-     ,   foreach([&result](int i){result << i << ",";})
+     ,   tovector<TestResult>()
     );
-    REQUIRE(result.str() == "5,6,7,8,9,");
+    REQUIRE(result == TestResult({5,6,7,8,9}));
   }
   SECTION("From and drop")
   {
-    std::stringstream result;
+    TestStringResult result =
     _(   from(std::string("abcdefghijkl"))
      ,   drop(5)
-     ,   foreach([&result](char i){result << i;})
+     ,   tovector<TestStringResult>()
     );
-    REQUIRE(result.str() == "fghijkl");
+    REQUIRE(result == "fghijkl");
   }
 }

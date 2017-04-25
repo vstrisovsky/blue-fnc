@@ -11,7 +11,7 @@
 #include <sstream>
 
 #include "functions.hpp"
-
+#include "test_result.hpp"
 
 TEST_CASE("From generators")
 {
@@ -19,57 +19,57 @@ TEST_CASE("From generators")
 
   SECTION("Initializer list")
   {
-    std::stringstream result;
+    TestResult result =
     _(   from({9,8,7,6,5,4,3,2,1,0})
-     ,   foreach([&result](int i){result << i << ",";})
+     ,   tovector<TestResult>()
     );
-    REQUIRE(result.str() == "9,8,7,6,5,4,3,2,1,0,");
+    REQUIRE(result == TestResult({9,8,7,6,5,4,3,2,1,0}));
   }
 
   SECTION("Vector")
   {
-    std::stringstream result;
+    TestResult result =
     _(   from(std::vector<int>({9,8,7,6,5,4,3,2,1,0}))
-     ,   foreach([&result](int i){result << i << ",";})
+     ,   tovector<TestResult>()
     );
-    REQUIRE(result.str() == "9,8,7,6,5,4,3,2,1,0,");
+    REQUIRE(result == TestResult({9,8,7,6,5,4,3,2,1,0}));
   }
 
   SECTION("Iterators")
   {
     std::vector<int> c({9,8,7,6,5,4,3,2,1,0});
-    std::stringstream result;
+    TestResult result =
     _(   from(c.begin(), c.end())
-     ,   foreach([&result](int i){result << i << ",";})
+     ,   tovector<TestResult>()
     );
-    REQUIRE(result.str() == "9,8,7,6,5,4,3,2,1,0,");
+    REQUIRE(result == TestResult({9,8,7,6,5,4,3,2,1,0}));
   }
 
   SECTION("Set")
   {
-    std::stringstream result;
+    TestResult result =
     _(   from(std::set<int>({9,8,7,6,5,4,3,2,1,0}))
-     ,   foreach([&result](int i){result << i << ",";})
+     ,   tovector<TestResult>()
     );
-    REQUIRE(result.str() == "0,1,2,3,4,5,6,7,8,9,");
+    REQUIRE(result == TestResult({0,1,2,3,4,5,6,7,8,9}));
   }
 
   SECTION("Array")
   {
     int arr[] = {9,8,7,6,5,4,3,2,1,0};
-    std::stringstream result;
+    TestResult result =
     _(   fromArray(arr)
-     ,   foreach([&result](int i){result << i << ",";})
+     ,   tovector<TestResult>()
     );
-    REQUIRE(result.str() == "9,8,7,6,5,4,3,2,1,0,");
+    REQUIRE(result == TestResult({9,8,7,6,5,4,3,2,1,0}));
   }
 
   SECTION("String")
   {
-    std::stringstream result;
+    TestResult result =
     _(   fromArray("ABC")
-     ,   foreach([&result](int i){result << i << ",";})
+     ,   tovector<TestResult>()
     );
-    REQUIRE(result.str() == "65,66,67,");
+    REQUIRE(result == TestResult({65,66,67,0}));
   }
 }

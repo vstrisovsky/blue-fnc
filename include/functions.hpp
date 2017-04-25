@@ -548,7 +548,7 @@ struct _ToVector
     bool push(_T&& v, _F& functions, _I)
     {
         //typedef typename _I::Next Next;
-        _result.emplace_back(std::move(v));
+        _result.push_back(std::move(v));
         return true;
     }
 
