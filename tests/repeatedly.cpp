@@ -13,14 +13,13 @@
 #include "functions.hpp"
 #include "test_result.hpp"
 
-
 TEST_CASE("Repeatedly generators")
 {
   Functions _;
 
   SECTION("Return constant")
   {
-    auto result =
+    TestResult result =
         _(   repeatedly([]{return 1;})
          ,   take(3)
          ,   tovector<TestResult>()
@@ -35,7 +34,7 @@ TEST_CASE("Repeat generators")
 
   SECTION("Return constant")
   {
-    auto result =
+    TestResult result =
     _(   repeat(1)
      ,   take(3)
      ,   tovector<TestResult>()

@@ -11,7 +11,7 @@
 #include <sstream>
 
 #include "functions.hpp"
-
+#include "test_result.hpp"
 
 TEST_CASE("Take")
 {
@@ -19,29 +19,29 @@ TEST_CASE("Take")
 
   SECTION("Range and take")
   {
-    std::stringstream result;
+    TestResult result =
     _(   range(10)
      ,   take(5)
-     ,   foreach([&result](int i){result << i << ",";})
+     ,   tovector<TestResult>()
     );
-    REQUIRE(result.str() == "0,1,2,3,4,");
+    REQUIRE(result == TestResult({0,1,2,3,4}));
   }
   SECTION("From and take")
   {
-    std::stringstream result;
+    TestStringResult result =
     _(   from(std::string("abcdefghijkl"))
      ,   take(5)
-     ,   foreach([&result](char i){result << i;})
+     ,   tovector<TestStringResult>()
     );
-    REQUIRE(result.str() == "abcde");
+    REQUIRE(result == "abcde");
   }
   SECTION("TakeWhile")
   {
-    std::stringstream result;
+    TestResult result =
     _(   range(10)
      ,   takewhile([](int i){return i < 5;})
-     ,   foreach([&result](int i){result << i << ",";})
+     ,   tovector<TestResult>()
     );
-    REQUIRE(result.str() == "0,1,2,3,4,");
+    REQUIRE(result == TestResult({0,1,2,3,4}));
   }
 }

@@ -11,6 +11,7 @@
 #include <sstream>
 
 #include "functions.hpp"
+#include "test_result.hpp"
 
 TEST_CASE("Range generators")
 {
@@ -18,48 +19,43 @@ TEST_CASE("Range generators")
 
   SECTION("Count")
   {
-    std::stringstream result;
+    TestResult result =
     _(   range(10)
-     ,   foreach([&result](int i){result << i << ",";})
+     ,   tovector<TestResult>()
     );
-    CAPTURE(result.str());
-    REQUIRE(result.str() == "0,1,2,3,4,5,6,7,8,9,");
+    REQUIRE(result == TestResult({0,1,2,3,4,5,6,7,8,9}));
   }
   SECTION("Start, End")
   {
-    std::stringstream result;
+    TestResult result =
     _(   range(0, 10)
-     ,   foreach([&result](int i){result << i << ",";})
+     ,   tovector<TestResult>()
     );
-    CAPTURE(result.str());
-    REQUIRE(result.str() == "0,1,2,3,4,5,6,7,8,9,");
+    REQUIRE(result == TestResult({0,1,2,3,4,5,6,7,8,9}));
   }
   SECTION("Start, End, Step")
   {
-    std::stringstream result;
+    TestResult result =
     _(   range(0, 10, 2)
-     ,   foreach([&result](int i){result << i << ",";})
+     ,   tovector<TestResult>()
     );
-    CAPTURE(result.str());
-    REQUIRE(result.str() == "0,2,4,6,8,");
+    REQUIRE(result == TestResult({0,2,4,6,8}));
   }
   SECTION("Infinite")
   {
-    std::stringstream result;
+    TestResult result =
     _(   range()
      ,   take(10)
-     ,   foreach([&result](int i){result << i << ",";})
+     ,   tovector<TestResult>()
     );
-    CAPTURE(result.str());
-    REQUIRE(result.str() == "0,1,2,3,4,5,6,7,8,9,");
+    REQUIRE(result == TestResult({0,1,2,3,4,5,6,7,8,9}));
   }
   SECTION("Start, End, Negative step")
   {
-    std::stringstream result;
+    TestResult result =
     _(   range(10, 0, -1)
-     ,   foreach([&result](int i){result << i << ",";})
+     ,   tovector<TestResult>()
     );
-    CAPTURE(result.str());
-    REQUIRE(result.str() == "10,9,8,7,6,5,4,3,2,1,");
+    REQUIRE(result == TestResult({10,9,8,7,6,5,4,3,2,1}));
   }
 }
