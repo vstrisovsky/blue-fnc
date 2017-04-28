@@ -93,22 +93,22 @@ int main(void)
     // std::cout << "Sum is: " << sum << "\n";
     // std::cout << "------\n";
 
-    size_t perfCount = 10000000;
+    size_t perfCount = 100000000;
 
     boost::timer tm;
 
     std::vector<int> tv;
-    tv.reserve(perfCount);
     int c = 0;
     for(size_t i = 0; i < perfCount; ++i)
     {
         int v = i * i;
-        if(v%2 && perfCount/2)
+        if(i < perfCount/2 && v%2)
         {
             tv.emplace_back(v);
         }
         ++c;
     };
+    std::cout << "\n------\n";
     std::cout << "Raw: " << tm.elapsed() << "\n";
 
     std::cout << "------\n";
@@ -119,7 +119,7 @@ int main(void)
         , map([](int i) {return i * i;})
         , filter([](int i){ return i % 2;})
         , drop(perfCount/2)
-        , tovector<std::vector<int>>(perfCount)
+        , into<std::vector<int>>()
         );
 
     std::cout << "blue-fnc: " << tm.elapsed() << "\n";

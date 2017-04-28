@@ -46,7 +46,7 @@ TEST_CASE("map")
     TestStringResult result =
     _(   from(std::string("abcde"))
      ,   map([](char ch)  { return ch + 1;})
-     ,   tovector<TestStringResult>()
+     ,   into<TestStringResult>()
     );
     REQUIRE(result == TestStringResult("bcdef"));
   }
@@ -56,7 +56,7 @@ TEST_CASE("map")
     TestResult result =
     _(   from(std::string("abcde"))
      ,   map([](char ch) -> int { return ch - 'a';})
-     ,   tovector<TestResult>()
+     ,   into<TestResult>()
     );
     REQUIRE(result == TestResult({0,1,2,3,4}));
   }
@@ -66,7 +66,7 @@ TEST_CASE("map")
     TestResult result =
     _(   from({0,1,2,3,4})
      ,   map(pow<int>)
-     ,   tovector<TestResult>()
+     ,   into<TestResult>()
     );
     REQUIRE(result == TestResult({0,1,4,9,16}));
   }
@@ -76,7 +76,7 @@ TEST_CASE("map")
     TestResult result =
     _(   from({0,1,2,3,4})
      ,   map(Pow<int>())
-     ,   tovector<TestResult>()
+     ,   into<TestResult>()
     );
     REQUIRE(result == TestResult({0,1,4,9,16}));
   }
@@ -86,7 +86,7 @@ TEST_CASE("map")
     TestResult result =
     _(   from({A{0},A{1},A{2},A{3},A{4}})
      ,   map(&A::v)
-     ,   tovector<TestResult>()
+     ,   into<TestResult>()
     );
     REQUIRE(result == TestResult({0,1,2,3,4}));
   }
@@ -96,7 +96,7 @@ TEST_CASE("map")
     TestResult result =
     _(   from({A{0},A{1},A{2},A{3},A{4}})
      ,   map(&A::get)
-     ,   tovector<TestResult>()
+     ,   into<TestResult>()
     );
     REQUIRE(result == TestResult({0,1,2,3,4}));
   }

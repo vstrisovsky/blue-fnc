@@ -112,7 +112,7 @@ struct _Repeat
         return true;
     }
 
-    const OutType& value()
+    OutType value()
     {
         return mValue;
     }
@@ -527,28 +527,23 @@ _Reduce<_ResultType, _Fnc> reduce(_ResultType initialValue, _Fnc fnc)
 }
 
 //
-template<typename _ResultType>
-struct _ToVector
+template<typename _ResultType, typename _Inserter>
+struct _Into
 {
     static const StepType stepType = StepType::eReducer;
 
     typedef _ResultType ResultType;
     ResultType _result;
 
-    _ToVector()
+    _Into()
     {
-    }
-
-    _ToVector(size_t sz)
-    {
-      _result.reserve(sz);
     }
 
     template<typename _T, typename _F, typename _I>
     bool push(_T&& v, _F& functions, _I)
     {
         //typedef typename _I::Next Next;
-        _result.push_back(std::move(v));
+        _Inserter::insert(_result, std::move(v));
         return true;
     }
 
@@ -563,16 +558,29 @@ struct _ToVector
     }
 };
 
-template<typename _ResultType>
-_ToVector<_ResultType> tovector()
-{
-    return _ToVector<_ResultType>();
-}
 
 template<typename _ResultType>
-_ToVector<_ResultType> tovector(size_t sz)
+struct Inserter
 {
-    return _ToVector<_ResultType>(sz);
+static void insert(_ResultType& coll, typename _ResultType::value_type&& v)
+{
+    coll.insert(std::move(v));
+}
+};
+
+template<typename _ResultType>
+struct BackInserter
+{
+static void insert(_ResultType& coll, typename _ResultType::value_type&& v)
+{
+    coll.push_back(std::move(v));
+}
+};
+
+template<typename _ResultType, typename _Inserter = BackInserter<_ResultType>>
+_Into<_ResultType, _Inserter> into()
+{
+    return _Into<_ResultType, _Inserter>();
 }
 
 template<typename _Fnc>

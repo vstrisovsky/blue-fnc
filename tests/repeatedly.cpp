@@ -22,7 +22,7 @@ TEST_CASE("Repeatedly generators")
     TestResult result =
         _(   repeatedly([]{return 1;})
          ,   take(3)
-         ,   tovector<TestResult>()
+         ,   into<TestResult>()
         );
     REQUIRE(result == TestResult({1,1,1}));
   }
@@ -37,7 +37,7 @@ TEST_CASE("Repeat generators")
     TestResult result =
     _(   repeat(1)
      ,   take(3)
-     ,   tovector<TestResult>()
+     ,   into<TestResult>()
     );
     REQUIRE(result == TestResult({1,1,1}));
   }

@@ -22,7 +22,7 @@ TEST_CASE("Take")
     TestResult result =
     _(   range(10)
      ,   take(5)
-     ,   tovector<TestResult>()
+     ,   into<TestResult>()
     );
     REQUIRE(result == TestResult({0,1,2,3,4}));
   }
@@ -31,7 +31,7 @@ TEST_CASE("Take")
     TestStringResult result =
     _(   from(std::string("abcdefghijkl"))
      ,   take(5)
-     ,   tovector<TestStringResult>()
+     ,   into<TestStringResult>()
     );
     REQUIRE(result == "abcde");
   }
@@ -40,7 +40,7 @@ TEST_CASE("Take")
     TestResult result =
     _(   range(10)
      ,   takewhile([](int i){return i < 5;})
-     ,   tovector<TestResult>()
+     ,   into<TestResult>()
     );
     REQUIRE(result == TestResult({0,1,2,3,4}));
   }

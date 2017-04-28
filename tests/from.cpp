@@ -21,7 +21,7 @@ TEST_CASE("From generators")
   {
     TestResult result =
     _(   from({9,8,7,6,5,4,3,2,1,0})
-     ,   tovector<TestResult>()
+     ,   into<TestResult>()
     );
     REQUIRE(result == TestResult({9,8,7,6,5,4,3,2,1,0}));
   }
@@ -30,7 +30,7 @@ TEST_CASE("From generators")
   {
     TestResult result =
     _(   from(std::vector<int>({9,8,7,6,5,4,3,2,1,0}))
-     ,   tovector<TestResult>()
+     ,   into<TestResult>()
     );
     REQUIRE(result == TestResult({9,8,7,6,5,4,3,2,1,0}));
   }
@@ -40,7 +40,7 @@ TEST_CASE("From generators")
     std::vector<int> c({9,8,7,6,5,4,3,2,1,0});
     TestResult result =
     _(   from(c.begin(), c.end())
-     ,   tovector<TestResult>()
+     ,   into<TestResult>()
     );
     REQUIRE(result == TestResult({9,8,7,6,5,4,3,2,1,0}));
   }
@@ -49,7 +49,7 @@ TEST_CASE("From generators")
   {
     TestResult result =
     _(   from(std::set<int>({9,8,7,6,5,4,3,2,1,0}))
-     ,   tovector<TestResult>()
+     ,   into<TestResult>()
     );
     REQUIRE(result == TestResult({0,1,2,3,4,5,6,7,8,9}));
   }
@@ -59,7 +59,7 @@ TEST_CASE("From generators")
     int arr[] = {9,8,7,6,5,4,3,2,1,0};
     TestResult result =
     _(   fromArray(arr)
-     ,   tovector<TestResult>()
+     ,   into<TestResult>()
     );
     REQUIRE(result == TestResult({9,8,7,6,5,4,3,2,1,0}));
   }
@@ -68,7 +68,7 @@ TEST_CASE("From generators")
   {
     TestResult result =
     _(   fromArray("ABC")
-     ,   tovector<TestResult>()
+     ,   into<TestResult>()
     );
     REQUIRE(result == TestResult({65,66,67,0}));
   }

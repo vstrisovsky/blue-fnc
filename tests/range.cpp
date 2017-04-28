@@ -21,7 +21,7 @@ TEST_CASE("Range generators")
   {
     TestResult result =
     _(   range(10)
-     ,   tovector<TestResult>()
+     ,   into<TestResult>()
     );
     REQUIRE(result == TestResult({0,1,2,3,4,5,6,7,8,9}));
   }
@@ -29,7 +29,7 @@ TEST_CASE("Range generators")
   {
     TestResult result =
     _(   range(0, 10)
-     ,   tovector<TestResult>()
+     ,   into<TestResult>()
     );
     REQUIRE(result == TestResult({0,1,2,3,4,5,6,7,8,9}));
   }
@@ -37,7 +37,7 @@ TEST_CASE("Range generators")
   {
     TestResult result =
     _(   range(0, 10, 2)
-     ,   tovector<TestResult>()
+     ,   into<TestResult>()
     );
     REQUIRE(result == TestResult({0,2,4,6,8}));
   }
@@ -46,7 +46,7 @@ TEST_CASE("Range generators")
     TestResult result =
     _(   range()
      ,   take(10)
-     ,   tovector<TestResult>()
+     ,   into<TestResult>()
     );
     REQUIRE(result == TestResult({0,1,2,3,4,5,6,7,8,9}));
   }
@@ -54,7 +54,7 @@ TEST_CASE("Range generators")
   {
     TestResult result =
     _(   range(10, 0, -1)
-     ,   tovector<TestResult>()
+     ,   into<TestResult>()
     );
     REQUIRE(result == TestResult({10,9,8,7,6,5,4,3,2,1}));
   }

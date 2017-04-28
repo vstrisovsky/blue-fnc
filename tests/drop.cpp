@@ -22,7 +22,7 @@ TEST_CASE("Drop")
     TestResult result =
     _(   range(10)
      ,   drop(5)
-     ,   tovector<TestResult>()
+     ,   into<TestResult>()
     );
     REQUIRE(result == TestResult({5,6,7,8,9}));
   }
@@ -31,7 +31,7 @@ TEST_CASE("Drop")
     TestStringResult result =
     _(   from(std::string("abcdefghijkl"))
      ,   drop(5)
-     ,   tovector<TestStringResult>()
+     ,   into<TestStringResult>()
     );
     REQUIRE(result == "fghijkl");
   }
